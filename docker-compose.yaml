@@ -1,0 +1,28 @@
+services:
+  tarantool:
+    image: tarantool
+    build:
+      context: ./tarantool
+    ports:
+      - "${TARANTOOL_PORT}:${TARANTOOL_PORT}"
+    environment:
+      TARANTOOL_USER: ${TARANTOOL_USER}
+      TARANTOOL_PASSWORD: ${TARANTOOL_PASSWORD}
+
+  votingbot:
+    image: votingbot
+    build:
+      context: .
+    depends_on:
+      - tarantool
+    network_mode: host
+    environment:
+      MATTERMOST_HOST: ${MATTERMOST_HOST}
+      MATTERMOST_PORT: ${MATTERMOST_PORT}
+      MATTERMOST_TEAM: ${MATTERMOST_TEAM}
+      BOT_USER: ${BOT_USER}
+      BOT_TOKEN: ${BOT_TOKEN}
+      TARANTOOL_HOST: ${TARANTOOL_HOST}
+      TARANTOOL_PORT: ${TARANTOOL_PORT}
+      TARANTOOL_USER: ${TARANTOOL_USER}
+      TARANTOOL_PASSWORD: ${TARANTOOL_PASSWORD}
